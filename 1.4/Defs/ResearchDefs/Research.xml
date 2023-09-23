@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ResearchProjectDef>
+    <tab>SRTSE</tab>
+    <defName>Research_Mando</defName>
+    <label>Mandolorian Flight</label>
+    <description>Research the blueprint for the razorcrest.</description>
+    <techLevel>Spacer</techLevel>
+    <baseCost>16000</baseCost>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <prerequisites>
+      <li>Research_SRTSMkIII</li>
+    </prerequisites>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <researchViewX>4.00</researchViewX>
+    <researchViewY>1.00</researchViewY>
+  </ResearchProjectDef>
+</Defs>

@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- razor crest building stuff -->
+  <ThingDef ParentName="NECShipBase">
+    <defName>RazorcrestSTARWARS</defName>
+    <label>razorcrest</label>
+    <thingClass>Razorcrest.ShipWithTurret</thingClass>
+    <description>An Impressive Gunship famously flown by Mandolorian bounty hunter Din Djarin.
+	Passenger cap: 1 - 8
+
+--Military--
+  Bombs: 25/15
+  Accuracy: Precise
+  Build: Gunship
+----------------------------
+Speed: Poor
+Fuel type: Uranium
+Fuel cap: 1,000L
+Fuel efficiency: Amazing
+----------------------------
+Cargo cap: 3,500kg
+Internal power plant: 2,500w</description>
+    <graphicData>
+      <texPath>RazorCrestSW</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(15,15)</drawSize>
+      <shadowData>
+        <volume>(0.8, 0.6, 0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(3,13)</size>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <WorkToBuild>32000</WorkToBuild>
+      <Flammability>0.3</Flammability>
+      <Mass>30</Mass>
+      <Beauty>25</Beauty>
+    </statBases>
+    <costList>
+      <Plasteel>5000</Plasteel>
+      <Steel>5000</Steel>
+      <Gold>200</Gold>
+      <Silver>1000</Silver>
+      <ComponentSpacer>10</ComponentSpacer>
+      <ComponentIndustrial>20</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Transporter">
+        <restEffectiveness>0.8</restEffectiveness>
+        <massCapacity>3500</massCapacity>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Hyperspace Containment</fuelLabel>
+        <fuelGizmoLabel>Hyperspace Containment</fuelGizmoLabel>
+        <fuelCapacity>1000</fuelCapacity>
+        <fuelMultiplier>250</fuelMultiplier>
+        <initialConfigurableTargetFuelLevel>1000</initialConfigurableTargetFuelLevel>
+        <initialFuelPercent>1.0</initialFuelPercent>
+        <fuelFilter>
+          <thingDefs>
+            <li>Uranium</li>
+          </thingDefs>
+        </fuelFilter>
+        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
+        <showFuelGizmo>false</showFuelGizmo>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+        <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
+      </li>
+      <li Class="SRTS.CompProperties_LaunchableSRTS">
+        <travelSpeed>4.5</travelSpeed>
+        <fuelPerTile>1.5</fuelPerTile>
+        <minPassengers>1</minPassengers>
+        <maxPassengers>8</maxPassengers>
+        <spaceFaring>true</spaceFaring>
+        <shuttleBayLanding>false</shuttleBayLanding>
+      </li>
+      <li Class="SRTS.CompProperties_BombsAway">
+        <numberBombs>25</numberBombs>
+        <precisionBombingNumBombs>15</precisionBombingNumBombs>
+        <radiusOfDrop>3</radiusOfDrop>
+        <speed>6</speed>
+        <distanceBetweenDrops>0.5</distanceBetweenDrops>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-2500</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Glower">
+        <glowRadius>18</glowRadius>
+        <glowColor>(217,217,217,0)</glowColor>
+      </li>
+    </comps>
+    <researchPrerequisites>
+      <li>Research_Mando</li>
+    </researchPrerequisites>
+    <constructionSkillPrerequisite>10</constructionSkillPrerequisite>
+    <uiIconScale>0.75</uiIconScale>
+    <killedLeavings>
+      <ChunkSlagSteel>12</ChunkSlagSteel>
+    </killedLeavings>
+    <building>
+      <combatPower>45</combatPower>
+      <!-- same as a scavenger -->
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <turretGunDef>RazorCrest_MiniTurret</turretGunDef>
+      <turretBurstCooldownTime>0</turretBurstCooldownTime>
+    </building>
+    <modExtensions>
+      <li Class="Razorcrest.TurretPosOffset">
+        <posOffset>(0, 0, 7)</posOffset>
+      </li>
+    </modExtensions>
+  </ThingDef>
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>RazorCrest_MiniTurret</defName>
+    <label>mini-turret gun</label>
+    <description>A simple automatic gun made to be mounted on a turret.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/TurretMini_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.70</AccuracyTouch>
+      <AccuracyShort>0.64</AccuracyShort>
+      <AccuracyMedium>0.41</AccuracyMedium>
+      <AccuracyLong>0.22</AccuracyLong>
+      <RangedWeapon_Cooldown>4.8</RangedWeapon_Cooldown>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>5</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Razorcrest.Verb_Shoot</verbClass>
+        <defaultProjectile>Bullet_MiniTurret</defaultProjectile>
+        <warmupTime>0</warmupTime>
+        <range>28.9</range>
+        <ticksBetweenBurstShots>8</ticksBetweenBurstShots>
+        <burstShotCount>2</burstShotCount>
+        <soundCast>GunShotA</soundCast>
+        <soundCastTail>GunTail_Light</soundCastTail>
+        <muzzleFlashScale>9</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+      </li>
+    </verbs>
+  </ThingDef>
+  <!-- razor crest flying stuff -->
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>RazorcrestSTARWARS_Incoming</defName>
+    <label>razorcrest incoming</label>
+    <thingClass>SRTS.SRTSIncoming</thingClass>
+    <graphicData>
+      <texPath>RazorCrestSW</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutFlying</shaderType>
+      <drawSize>(15,15)</drawSize>
+    </graphicData>
+    <skyfaller>
+      <movementType>Decelerate</movementType>
+      <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+      <shadowSize>(6,6)</shadowSize>
+      <anticipationSound>DropPod_Fall</anticipationSound>
+      <anticipationSoundTicks>100</anticipationSoundTicks>
+      <motesPerCell>0</motesPerCell>
+    </skyfaller>
+  </ThingDef>
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>RazorcrestSTARWARS_Leaving</defName>
+    <label>razorcrest leaving</label>
+    <thingClass>SRTS.SRTSLeaving</thingClass>
+    <graphicData>
+      <texPath>RazorCrestSW</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutFlying</shaderType>
+      <drawSize>(15,15)</drawSize>
+    </graphicData>
+    <skyfaller>
+      <movementType>Accelerate</movementType>
+      <reversed>true</reversed>
+      <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+      <shadowSize>(6,6)</shadowSize>
+      <anticipationSound>Sound_Launch</anticipationSound>
+      <anticipationSoundTicks>-10</anticipationSoundTicks>
+      <ticksToImpactRange>
+        <min>-40</min>
+        <max>-15</max>
+      </ticksToImpactRange>
+    </skyfaller>
+  </ThingDef>
+  <ThingDef ParentName="BomberSkyfallerBase">
+    <defName>RazorcrestSTARWARS_BomberRun</defName>
+    <label>razorcrest Bombing</label>
+    <thingClass>SRTS.SRTSBombing</thingClass>
+    <graphicData>
+      <texPath>RazorCrestSW</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutFlying</shaderType>
+      <drawSize>(15,15)</drawSize>
+    </graphicData>
+    <skyfaller>
+      <speed>0.85</speed>
+      <movementType>ConstantSpeed</movementType>
+      <shadow>Things/Skyfaller/SkyfallerShadowDropPod</shadow>
+      <shadowSize>(6,6)</shadowSize>
+      <anticipationSound>DropPod_Fall</anticipationSound>
+      <anticipationSoundTicks>100</anticipationSoundTicks>
+      <motesPerCell>0</motesPerCell>
+    </skyfaller>
+  </ThingDef>
+  <ThingDef>
+    <defName>RazorcrestSTARWARS_Active</defName>
+    <label>razorcrest active</label>
+    <category>Item</category>
+    <thingClass>ActiveDropPod</thingClass>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>RazorCrestSW</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(15,15)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <blockWind>true</blockWind>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>5000</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <selectable>true</selectable>
+  </ThingDef>
+</Defs>
