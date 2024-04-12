@@ -2,7 +2,7 @@
 <ModSyncNinjaData>
   <ID>0b5d16cb-8b04-4b6d-bb49-3aafacf391bd</ID>
   <ModName>Razorcrest (Continued)</ModName>
-  <Version>1.4.0</Version>
+  <Version>1.5.0</Version>
   <SaveBreaking>False</SaveBreaking>
   <Host name="Github">
     <Owner>emipa606</Owner>
@@ -12,7 +12,3 @@
     <Branch>master</Branch>
   </Host>
 </ModSyncNinjaData>
-
-
-
-

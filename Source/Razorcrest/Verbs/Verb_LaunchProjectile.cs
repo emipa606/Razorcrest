@@ -50,7 +50,7 @@ public class Verb_LaunchProjectile : Verb
         if (EquipmentSource != null)
         {
             EquipmentSource.GetComp<CompChangeableProjectile>()?.Notify_ProjectileLaunched();
-            EquipmentSource.GetComp<CompReloadable>()?.UsedOnce();
+            EquipmentSource.GetComp<CompApparelReloadable>()?.UsedOnce();
         }
 
         var launcher = caster;
@@ -113,7 +113,7 @@ public class Verb_LaunchProjectile : Verb
         var targetCoverDef = randomCoverToMissInto?.def;
         if (!Rand.Chance(shotReport.AimOnTargetChance_IgnoringPosture))
         {
-            resultingLine.ChangeDestToMissWild(shotReport.AimOnTargetChance_StandardTarget);
+            resultingLine.ChangeDestToMissWild_NewTemp(shotReport.AimOnTargetChance_StandardTarget, false, caster.Map);
             ThrowDebugText("ToWild" + (canHitNonTargetPawnsNow ? "\nchntp" : ""));
             ThrowDebugText("Wild\nDest", resultingLine.Dest);
             hitFlags = ProjectileHitFlags.NonTargetWorld;
@@ -155,7 +155,8 @@ public class Verb_LaunchProjectile : Verb
             hitFlags |= ProjectileHitFlags.NonTargetPawns;
         }
 
-        if (!currentTarget.HasThing || currentTarget.Thing.def.Fillage == FillCategory.Full)
+        if (currentTarget.Thing != null &&
+            (!currentTarget.HasThing || currentTarget.Thing.def.Fillage == FillCategory.Full))
         {
             hitFlags |= ProjectileHitFlags.NonTargetWorld;
         }
