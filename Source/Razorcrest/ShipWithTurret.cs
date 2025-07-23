@@ -17,43 +17,43 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
 
     private const float SightRadiusTurret = 13.4f;
 
-    public static readonly Material ForcedTargetLineMat =
+    private static readonly Material ForcedTargetLineMat =
         MaterialPool.MatFrom(GenDraw.LineTexPath, ShaderDatabase.Transparent, new Color(1f, 0.5f, 0.5f));
 
-    protected int burstCooldownTicksLeft;
+    private int burstCooldownTicksLeft;
 
-    protected int burstWarmupTicksLeft;
+    private int burstWarmupTicksLeft;
 
-    protected LocalTargetInfo currentTargetInt = LocalTargetInfo.Invalid;
+    private LocalTargetInfo currentTargetInt = LocalTargetInfo.Invalid;
 
-    protected CompCanBeDormant dormantComp;
+    private CompCanBeDormant dormantComp;
 
-    protected LocalTargetInfo forcedTarget = LocalTargetInfo.Invalid;
+    private LocalTargetInfo forcedTarget = LocalTargetInfo.Invalid;
 
-    public Thing gun;
+    private Thing gun;
 
     private bool holdFire;
 
-    protected CompInitiatable initiatableComp;
+    private CompInitiatable initiatableComp;
 
     private LocalTargetInfo lastAttackedTarget;
 
     private int lastAttackTargetTick;
 
-    protected CompMannable mannableComp;
+    private CompMannable mannableComp;
 
-    protected CompPowerTrader powerComp;
+    private CompPowerTrader powerComp;
 
-    protected Effecter progressBarEffecter;
+    private Effecter progressBarEffecter;
 
-    protected StunHandler stunner;
+    private StunHandler stunner;
 
     public ShipWithTurret()
     {
         stunner = new StunHandler(this);
     }
 
-    public bool Active
+    private bool Active
     {
         get
         {
@@ -126,13 +126,13 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         }
     }
 
-    public CompEquippable GunCompEq => gun.TryGetComp<CompEquippable>();
+    private CompEquippable GunCompEq => gun.TryGetComp<CompEquippable>();
 
-    public LocalTargetInfo CurrentTarget => currentTargetInt;
+    private LocalTargetInfo CurrentTarget => currentTargetInt;
 
     private bool WarmingUp => burstWarmupTicksLeft > 0;
 
-    public Verb AttackVerb => GunCompEq.PrimaryVerb;
+    private Verb AttackVerb => GunCompEq.PrimaryVerb;
 
     public bool IsMannable => mannableComp != null;
 
@@ -186,19 +186,19 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
             burstCooldownTicksLeft = def.building.turretInitialCooldownTime.SecondsToTicks();
         }
 
-        UpdateGunVerbs();
+        updateGunVerbs();
     }
 
     public override void PostMake()
     {
         base.PostMake();
-        MakeGun();
+        makeGun();
     }
 
     public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
     {
         base.DeSpawn(mode);
-        ResetCurrentTarget();
+        resetCurrentTarget();
         progressBarEffecter?.Cleanup();
     }
 
@@ -218,13 +218,13 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         BackCompatibility.PostExposeData(this);
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
-            UpdateGunVerbs();
+            updateGunVerbs();
         }
     }
 
-    public override bool ClaimableBy(Faction by, StringBuilder reason = null)
+    public override AcceptanceReport ClaimableBy(Faction by)
     {
-        if (!base.ClaimableBy(by, reason))
+        if (!base.ClaimableBy(by))
         {
             return false;
         }
@@ -249,7 +249,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         {
             if (forcedTarget.IsValid)
             {
-                ResetForcedTarget();
+                resetForcedTarget();
             }
 
             return;
@@ -272,7 +272,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
             forcedTarget = targ;
             if (burstCooldownTicksLeft <= 0)
             {
-                TryStartShootSomething(false);
+                tryStartShootSomething(false);
             }
         }
 
@@ -283,7 +283,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         }
     }
 
-    public override void Tick()
+    protected override void Tick()
     {
         base.Tick();
         if (forcedTarget.HasThing && (!forcedTarget.Thing.Spawned || !Spawned || forcedTarget.Thing.Map != Map))
@@ -298,13 +298,13 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
             var compChangeableProjectile = gun.TryGetComp<CompChangeableProjectile>();
             if (!compChangeableProjectile.allowedShellsSettings.AllowedToAccept(compChangeableProjectile.LoadedShell))
             {
-                ExtractShell();
+                extractShell();
             }
         }
 
         if (forcedTarget.IsValid && !CanSetForcedTarget)
         {
-            ResetForcedTarget();
+            resetForcedTarget();
         }
 
         if (!CanToggleHoldFire)
@@ -314,7 +314,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
 
         if (forcedTarget.ThingDestroyed)
         {
-            ResetForcedTarget();
+            resetForcedTarget();
         }
 
         if (Active && (mannableComp == null || mannableComp.MannedNow) && !stunner.Stunned && Spawned)
@@ -330,7 +330,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
                 burstWarmupTicksLeft--;
                 if (burstWarmupTicksLeft == 0)
                 {
-                    BeginBurst();
+                    beginBurst();
                 }
             }
             else
@@ -340,32 +340,29 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
                     burstCooldownTicksLeft--;
                     if (IsMortar)
                     {
-                        if (progressBarEffecter == null)
-                        {
-                            progressBarEffecter = EffecterDefOf.ProgressBar.Spawn();
-                        }
+                        progressBarEffecter ??= EffecterDefOf.ProgressBar.Spawn();
 
                         progressBarEffecter.EffectTick(this, TargetInfo.Invalid);
                         var mote = ((SubEffecter_ProgressBar)progressBarEffecter.children[0]).mote;
                         mote.progress = 1f - (Math.Max(burstCooldownTicksLeft, 0) /
-                                              (float)BurstCooldownTime().SecondsToTicks());
+                                              (float)burstCooldownTime().SecondsToTicks());
                         mote.offsetZ = -0.8f;
                     }
                 }
 
                 if (burstCooldownTicksLeft <= 0 && this.IsHashIntervalTick(10))
                 {
-                    TryStartShootSomething(true);
+                    tryStartShootSomething(true);
                 }
             }
         }
         else
         {
-            ResetCurrentTarget();
+            resetCurrentTarget();
         }
     }
 
-    protected void TryStartShootSomething(bool canBeginBurstImmediately)
+    private void tryStartShootSomething(bool canBeginBurstImmediately)
     {
         if (progressBarEffecter != null)
         {
@@ -376,12 +373,12 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         if (!Spawned || holdFire && CanToggleHoldFire ||
             AttackVerb.ProjectileFliesOverhead() && Map.roofGrid.Roofed(Position) || !AttackVerb.Available())
         {
-            ResetCurrentTarget();
+            resetCurrentTarget();
             return;
         }
 
         var isValid = currentTargetInt.IsValid;
-        currentTargetInt = forcedTarget.IsValid ? forcedTarget : TryFindNewTarget();
+        currentTargetInt = forcedTarget.IsValid ? forcedTarget : tryFindNewTarget();
 
         if (!isValid && currentTargetInt.IsValid)
         {
@@ -397,7 +394,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
             }
             else if (canBeginBurstImmediately)
             {
-                BeginBurst();
+                beginBurst();
             }
             else
             {
@@ -406,13 +403,13 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         }
         else
         {
-            ResetCurrentTarget();
+            resetCurrentTarget();
         }
     }
 
-    protected LocalTargetInfo TryFindNewTarget()
+    private LocalTargetInfo tryFindNewTarget()
     {
-        var attackTargetSearcher = TargSearcher();
+        var attackTargetSearcher = targSearcher();
         var faction = attackTargetSearcher.Thing.Faction;
         var range = AttackVerb.verbProps.range;
         if (Rand.Value < 0.5f && AttackVerb.ProjectileFliesOverhead() && faction.HostileTo(Faction.OfPlayer) && Map
@@ -444,10 +441,10 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         }
 
         return (Thing)AttackTargetFinder.BestShootTargetFromCurrentPosition(attackTargetSearcher, targetScanFlags,
-            IsValidTarget);
+            isValidTarget);
     }
 
-    private IAttackTargetSearcher TargSearcher()
+    private IAttackTargetSearcher targSearcher()
     {
         if (mannableComp is { MannedNow: true })
         {
@@ -457,7 +454,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         return this;
     }
 
-    private bool IsValidTarget(Thing t)
+    private bool isValidTarget(Thing t)
     {
         var drawPos = DrawPos;
         var drawOffset = def.GetModExtension<TurretPosOffset>();
@@ -477,7 +474,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         }
         else
         {
-            Log.Message(AttackVerb + " - Cant find a shoot line");
+            Log.Message($"{AttackVerb} - Cant find a shoot line");
             return false;
         }
 
@@ -503,18 +500,18 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         return !pawn.RaceProps.Animal || pawn.Faction != Faction.OfPlayer;
     }
 
-    protected void BeginBurst()
+    private void beginBurst()
     {
         AttackVerb.TryStartCastOn(CurrentTarget);
         OnAttackedTarget(CurrentTarget);
     }
 
-    protected void BurstComplete()
+    private void burstComplete()
     {
-        burstCooldownTicksLeft = BurstCooldownTime().SecondsToTicks();
+        burstCooldownTicksLeft = burstCooldownTime().SecondsToTicks();
     }
 
-    protected float BurstCooldownTime()
+    private float burstCooldownTime()
     {
         return def.building.turretBurstCooldownTime >= 0f
             ? def.building.turretBurstCooldownTime
@@ -535,14 +532,15 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
             stringBuilder.AppendLine("MinimumRange".Translate() + ": " + AttackVerb.verbProps.minRange.ToString("F0"));
         }
 
-        if (Spawned && IsMortarOrProjectileFliesOverhead && Position.Roofed(Map))
+        switch (Spawned)
         {
-            stringBuilder.AppendLine("CannotFire".Translate() + ": " + "Roofed".Translate().CapitalizeFirst());
-        }
-        else if (Spawned && burstCooldownTicksLeft > 0 && BurstCooldownTime() > 5f)
-        {
-            stringBuilder.AppendLine("CanFireIn".Translate() + ": " +
-                                     burstCooldownTicksLeft.ToStringSecondsFromTicks());
+            case true when IsMortarOrProjectileFliesOverhead && Position.Roofed(Map):
+                stringBuilder.AppendLine("CannotFire".Translate() + ": " + "Roofed".Translate().CapitalizeFirst());
+                break;
+            case true when burstCooldownTicksLeft > 0 && burstCooldownTime() > 5f:
+                stringBuilder.AppendLine("CanFireIn".Translate() + ": " +
+                                         burstCooldownTicksLeft.ToStringSecondsFromTicks());
+                break;
         }
 
         var compChangeableProjectile = gun.TryGetComp<CompChangeableProjectile>();
@@ -606,7 +604,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         if (CanExtractShell)
         {
             var compChangeableProjectile = gun.TryGetComp<CompChangeableProjectile>();
-            var command_Action = new Command_Action
+            var commandAction = new Command_Action
             {
                 defaultLabel = "CommandExtractShell".Translate(),
                 defaultDesc = "CommandExtractShellDesc".Translate(),
@@ -614,9 +612,9 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
                 iconAngle = compChangeableProjectile.LoadedShell.uiIconAngle,
                 iconOffset = compChangeableProjectile.LoadedShell.uiIconOffset,
                 iconDrawScale = GenUI.IconDrawScale(compChangeableProjectile.LoadedShell),
-                action = ExtractShell
+                action = extractShell
             };
-            yield return command_Action;
+            yield return commandAction;
         }
 
         var compChangeableProjectile2 = gun.TryGetComp<CompChangeableProjectile>();
@@ -631,7 +629,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
 
         if (CanSetForcedTarget)
         {
-            var command_VerbTarget = new Command_VerbTarget
+            var commandVerbTarget = new Command_VerbTarget
             {
                 defaultLabel = "CommandSetForceAttackTarget".Translate(),
                 defaultDesc = "CommandSetForceAttackTargetDesc".Translate(),
@@ -642,32 +640,32 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
             };
             if (Spawned && IsMortarOrProjectileFliesOverhead && Position.Roofed(Map))
             {
-                command_VerbTarget.Disable("CannotFire".Translate() + ": " + "Roofed".Translate().CapitalizeFirst());
+                commandVerbTarget.Disable("CannotFire".Translate() + ": " + "Roofed".Translate().CapitalizeFirst());
             }
 
-            yield return command_VerbTarget;
+            yield return commandVerbTarget;
         }
 
         if (forcedTarget.IsValid)
         {
-            var command_Action2 = new Command_Action
+            var commandAction2 = new Command_Action
             {
                 defaultLabel = "CommandStopForceAttack".Translate(),
                 defaultDesc = "CommandStopForceAttackDesc".Translate(),
                 icon = ContentFinder<Texture2D>.Get("UI/Commands/Halt"),
                 action = delegate
                 {
-                    ResetForcedTarget();
+                    resetForcedTarget();
                     SoundDefOf.Tick_Low.PlayOneShotOnCamera();
                 }
             };
             if (!forcedTarget.IsValid)
             {
-                command_Action2.Disable("CommandStopAttackFailNotForceAttacking".Translate());
+                commandAction2.Disable("CommandStopAttackFailNotForceAttacking".Translate());
             }
 
-            command_Action2.hotKey = KeyBindingDefOf.Misc5;
-            yield return command_Action2;
+            commandAction2.hotKey = KeyBindingDefOf.Misc5;
+            yield return commandAction2;
         }
 
         if (!CanToggleHoldFire)
@@ -675,7 +673,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
             yield break;
         }
 
-        var command_Toggle = new Command_Toggle
+        var commandToggle = new Command_Toggle
         {
             defaultLabel = "CommandHoldFire".Translate(),
             defaultDesc = "CommandHoldFireDesc".Translate(),
@@ -686,49 +684,49 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
                 holdFire = !holdFire;
                 if (holdFire)
                 {
-                    ResetForcedTarget();
+                    resetForcedTarget();
                 }
             },
             isActive = () => holdFire
         };
-        yield return command_Toggle;
+        yield return commandToggle;
     }
 
-    private void ExtractShell()
+    private void extractShell()
     {
         GenPlace.TryPlaceThing(gun.TryGetComp<CompChangeableProjectile>().RemoveShell(), Position, Map,
             ThingPlaceMode.Near);
     }
 
-    private void ResetForcedTarget()
+    private void resetForcedTarget()
     {
         forcedTarget = LocalTargetInfo.Invalid;
         burstWarmupTicksLeft = 0;
         if (burstCooldownTicksLeft <= 0)
         {
-            TryStartShootSomething(false);
+            tryStartShootSomething(false);
         }
     }
 
-    private void ResetCurrentTarget()
+    private void resetCurrentTarget()
     {
         currentTargetInt = LocalTargetInfo.Invalid;
         burstWarmupTicksLeft = 0;
     }
 
-    public void MakeGun()
+    private void makeGun()
     {
         gun = ThingMaker.MakeThing(def.building.turretGunDef);
-        UpdateGunVerbs();
+        updateGunVerbs();
     }
 
-    private void UpdateGunVerbs()
+    private void updateGunVerbs()
     {
         var allVerbs = gun.TryGetComp<CompEquippable>().AllVerbs;
         foreach (var verb in allVerbs)
         {
             verb.caster = this;
-            verb.castCompleteCallback = BurstComplete;
+            verb.castCompleteCallback = burstComplete;
         }
     }
 
@@ -744,7 +742,7 @@ public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
         absorbed = false;
     }
 
-    protected void OnAttackedTarget(LocalTargetInfo target)
+    private void OnAttackedTarget(LocalTargetInfo target)
     {
         lastAttackTargetTick = Find.TickManager.TicksGame;
         lastAttackedTarget = target;

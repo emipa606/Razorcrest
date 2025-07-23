@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: mini-turret gun -->
+  <RazorCrest_MiniTurret.label>mini-turret gun</RazorCrest_MiniTurret.label>
+  <!-- EN: A simple automatic gun made to be mounted on a turret. -->
+  <RazorCrest_MiniTurret.description>A simple automatic gun made to be mounted on a turret.</RazorCrest_MiniTurret.description>
+  <!-- EN: mini-turret gun -->
+  <RazorCrest_MiniTurret.verbs.Verb_Shoot.label>mini-turret gun</RazorCrest_MiniTurret.verbs.Verb_Shoot.label>
+  <!-- EN: razorcrest -->
+  <RazorcrestSTARWARS.label>razorcrest</RazorcrestSTARWARS.label>
+  <!-- EN: An Impressive Gunship famously flown by Mandolorian bounty hunter Din Djarin.\n	Passenger cap: 1 - 8\n\n- -Military- -\n  Bombs: 25/15\n  Accuracy: Precise\n  Build: Gunship\n- - - - - - - - - - - - - - - - - -\nSpeed: Poor\nFuel type: Uranium\nFuel cap: 1,000L\nFuel efficiency: Amazing\n- - - - - - - - - - - - - - - - - -\nCargo cap: 3,500kg\nInternal power plant: 2,500w -->
+  <RazorcrestSTARWARS.description>An Impressive Gunship famously flown by Mandolorian bounty hunter Din Djarin.
+	Passenger cap: 1 - 8
+
+--Military--
+  Bombs: 25/15
+  Accuracy: Precise
+  Build: Gunship
+----------------------------
+Speed: Poor
+Fuel type: Uranium
+Fuel cap: 1,000L
+Fuel efficiency: Amazing
+----------------------------
+Cargo cap: 3,500kg
+Internal power plant: 2,500w</RazorcrestSTARWARS.description>
+  <!-- EN: Hyperspace Containment -->
+  <RazorcrestSTARWARS.comps.CompRefuelable.fuelGizmoLabel>Hyperspace Containment</RazorcrestSTARWARS.comps.CompRefuelable.fuelGizmoLabel>
+  <!-- EN: Hyperspace Containment -->
+  <RazorcrestSTARWARS.comps.CompRefuelable.fuelLabel>Hyperspace Containment</RazorcrestSTARWARS.comps.CompRefuelable.fuelLabel>
+  <!-- EN: razorcrest active -->
+  <RazorcrestSTARWARS_Active.label>razorcrest active</RazorcrestSTARWARS_Active.label>
+  <!-- EN: razorcrest Bombing -->
+  <RazorcrestSTARWARS_BomberRun.label>razorcrest Bombing</RazorcrestSTARWARS_BomberRun.label>
+  <!-- EN: razorcrest incoming -->
+  <RazorcrestSTARWARS_Incoming.label>razorcrest incoming</RazorcrestSTARWARS_Incoming.label>
+  <!-- EN: razorcrest leaving -->
+  <RazorcrestSTARWARS_Leaving.label>razorcrest leaving</RazorcrestSTARWARS_Leaving.label>
+</LanguageData>

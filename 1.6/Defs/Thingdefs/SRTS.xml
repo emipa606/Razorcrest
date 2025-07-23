@@ -213,7 +213,7 @@ Internal power plant: 2,500w</description>
     <defName>RazorcrestSTARWARS_Active</defName>
     <label>razorcrest active</label>
     <category>Item</category>
-    <thingClass>ActiveDropPod</thingClass>
+    <thingClass>ActiveTransporter</thingClass>
     <scatterableOnMapGen>false</scatterableOnMapGen>
     <tickerType>Normal</tickerType>
     <graphicData>

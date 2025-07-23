@@ -2,5 +2,17 @@
   "Continued": true,
   "CanAdd": "0",
   "CanRemove": "2",
-  "PreviewVersion": "1.5"
+  "PreviewVersion": "1.6",
+  "Patches": false,
+  "Defs": true,
+  "Assemblies": true,
+  "LinesOfCode": 32891,
+  "LinesOfXML": 9143,
+  "CodeBaseSize": 73,
+  "LastXmlCleaning": "2025-07-23T21:21:31.8857065+02:00",
+  "SocialImageSet": true,
+  "SearchTags": [
+    " bounty hunter",
+    " srts"
+  ]
 }

@@ -7,7 +7,7 @@ namespace Razorcrest;
 
 public class Verb_LaunchProjectile : Verb
 {
-    public virtual ThingDef Projectile
+    protected virtual ThingDef Projectile
     {
         get
         {
@@ -89,8 +89,8 @@ public class Verb_LaunchProjectile : Verb
                 if (num2 > 0)
                 {
                     var c = currentTarget.Cell + GenRadial.RadialPattern[num2];
-                    ThrowDebugText("ToRadius");
-                    ThrowDebugText("Rad\nDest", c);
+                    throwDebugText("ToRadius");
+                    throwDebugText("Rad\nDest", c);
                     hitFlags = ProjectileHitFlags.NonTargetWorld;
                     if (Rand.Chance(0.5f))
                     {
@@ -113,9 +113,9 @@ public class Verb_LaunchProjectile : Verb
         var targetCoverDef = randomCoverToMissInto?.def;
         if (!Rand.Chance(shotReport.AimOnTargetChance_IgnoringPosture))
         {
-            resultingLine.ChangeDestToMissWild_NewTemp(shotReport.AimOnTargetChance_StandardTarget, false, caster.Map);
-            ThrowDebugText("ToWild" + (canHitNonTargetPawnsNow ? "\nchntp" : ""));
-            ThrowDebugText("Wild\nDest", resultingLine.Dest);
+            resultingLine.ChangeDestToMissWild(shotReport.AimOnTargetChance_StandardTarget, false, caster.Map);
+            throwDebugText($"ToWild{(canHitNonTargetPawnsNow ? "\nchntp" : "")}");
+            throwDebugText("Wild\nDest", resultingLine.Dest);
             hitFlags = ProjectileHitFlags.NonTargetWorld;
             if (Rand.Chance(0.5f) && canHitNonTargetPawnsNow)
             {
@@ -130,13 +130,13 @@ public class Verb_LaunchProjectile : Verb
         if (currentTarget.Thing != null && currentTarget.Thing.def.category == ThingCategory.Pawn &&
             !Rand.Chance(shotReport.PassCoverChance))
         {
-            ThrowDebugText("ToCover" + (canHitNonTargetPawnsNow ? "\nchntp" : ""));
+            throwDebugText($"ToCover{(canHitNonTargetPawnsNow ? "\nchntp" : "")}");
             if (randomCoverToMissInto == null)
             {
                 return true;
             }
 
-            ThrowDebugText("Cover\nDest", randomCoverToMissInto.Position);
+            throwDebugText("Cover\nDest", randomCoverToMissInto.Position);
             hitFlags = ProjectileHitFlags.NonTargetWorld;
             if (canHitNonTargetPawnsNow)
             {
@@ -161,24 +161,24 @@ public class Verb_LaunchProjectile : Verb
             hitFlags |= ProjectileHitFlags.NonTargetWorld;
         }
 
-        ThrowDebugText("ToHit" + (canHitNonTargetPawnsNow ? "\nchntp" : ""));
+        throwDebugText($"ToHit{(canHitNonTargetPawnsNow ? "\nchntp" : "")}");
         if (currentTarget.Thing != null)
         {
             projectile2.Launch(launcher, drawPos, currentTarget, currentTarget, hitFlags, false, equipment,
                 targetCoverDef);
-            ThrowDebugText("Hit\nDest", currentTarget.Cell);
+            throwDebugText("Hit\nDest", currentTarget.Cell);
         }
         else
         {
             projectile2.Launch(launcher, drawPos, resultingLine.Dest, currentTarget, hitFlags, false,
                 equipment, targetCoverDef);
-            ThrowDebugText("Hit\nDest", resultingLine.Dest);
+            throwDebugText("Hit\nDest", resultingLine.Dest);
         }
 
         return true;
     }
 
-    private void ThrowDebugText(string text)
+    private void throwDebugText(string text)
     {
         if (DebugViewSettings.drawShooting)
         {
@@ -186,7 +186,7 @@ public class Verb_LaunchProjectile : Verb
         }
     }
 
-    private void ThrowDebugText(string text, IntVec3 c)
+    private void throwDebugText(string text, IntVec3 c)
     {
         if (DebugViewSettings.drawShooting)
         {
