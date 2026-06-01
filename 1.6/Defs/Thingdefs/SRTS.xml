@@ -48,6 +48,7 @@ Internal power plant: 2,500w</description>
       <li Class="CompProperties_Transporter">
         <restEffectiveness>0.8</restEffectiveness>
         <massCapacity>3500</massCapacity>
+        <max1PerGroup>true</max1PerGroup>
       </li>
       <li Class="CompProperties_Refuelable">
         <fuelLabel>Hyperspace Containment</fuelLabel>
@@ -66,13 +67,21 @@ Internal power plant: 2,500w</description>
         <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
         <drawFuelGaugeInMap>false</drawFuelGaugeInMap>
       </li>
-      <li Class="SRTS.CompProperties_LaunchableSRTS">
-        <travelSpeed>4.5</travelSpeed>
+      <li Class="CompProperties_Launchable">
         <fuelPerTile>1.5</fuelPerTile>
+        <minFuelCost>50</minFuelCost>
+        <skyfallerLeaving>RazorcrestSTARWARS_Leaving</skyfallerLeaving>
+        <worldObjectDef>TravelingSRTS</worldObjectDef>
+        <cooldownTicks>5000</cooldownTicks>
+        <fixedLaunchDistanceMax>86</fixedLaunchDistanceMax>
+        <cooldownEndedMessage>{0} is ready to launch again.</cooldownEndedMessage>
+      </li>
+      <li Class="SRTS.CompProperties_LaunchableSRTS">
+        <shipDef>RazorcrestSTARWARS</shipDef>
+        <travelSpeed>4.5</travelSpeed>
         <minPassengers>1</minPassengers>
         <maxPassengers>8</maxPassengers>
         <spaceFaring>true</spaceFaring>
-        <shuttleBayLanding>false</shuttleBayLanding>
       </li>
       <li Class="SRTS.CompProperties_BombsAway">
         <numberBombs>25</numberBombs>
@@ -146,8 +155,54 @@ Internal power plant: 2,500w</description>
       </li>
     </verbs>
   </ThingDef>
+  <ThingDef Name="BomberShuttleSkyfallerBase" ParentName="ShuttleSkyfallerBase" Abstract="True">
+    <thingClass>SRTS.BomberSkyfaller</thingClass>
+    <useHitPoints>false</useHitPoints>
+    <drawOffscreen>true</drawOffscreen>
+    <seeThroughFog>true</seeThroughFog>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Skyfaller</altitudeLayer>
+    <drawerType>RealtimeOnly</drawerType>
+    <size>(1,1)</size>
+    <skyfaller>
+      <reversed>true</reversed>
+      <ticksToImpactRange>0</ticksToImpactRange>
+      <rotationCurve>
+        <points>
+          <li>(0, 30)</li>
+          <li>(0.2, 0)</li>
+          <li>(0.87, 0)</li>
+          <li>(1, -30)</li>
+        </points>
+      </rotationCurve>
+      <zPositionCurve>
+        <points>
+          <li>(0, 12.5)</li>
+          <li>(0.13, 0)</li>
+          <li>(0.18, -1.4)</li>
+          <li>(0.9, 0)</li>
+          <li>(1, 15.5)</li>
+        </points>
+      </zPositionCurve>
+      <speedCurve>
+        <points>
+          <li>(0,0)</li>
+        </points>
+      </speedCurve>
+    </skyfaller>
+  </ThingDef>
+  <TransportShipDef Class="SRTS.BomberShipDef">
+    <defName>RazorcrestSTARWARS</defName>
+    <shipThing>RazorcrestSTARWARS</shipThing>
+    <arrivingSkyfaller>RazorcrestSTARWARS_Incoming</arrivingSkyfaller>
+    <leavingSkyfaller>RazorcrestSTARWARS_Leaving</leavingSkyfaller>
+    <bomberSkyfaller>RazorcrestSTARWARS_BomberRun</bomberSkyfaller>
+    <worldObject>TravelingSRTS</worldObject>
+    <maxLaunchDistance>86</maxLaunchDistance>
+    <playerShuttle>true</playerShuttle>
+  </TransportShipDef>
   <!-- razor crest flying stuff -->
-  <ThingDef ParentName="SkyfallerBase">
+  <ThingDef ParentName="ShuttleSkyfallerBase">
     <defName>RazorcrestSTARWARS_Incoming</defName>
     <label>razorcrest incoming</label>
     <thingClass>SRTS.SRTSIncoming</thingClass>
@@ -164,9 +219,29 @@ Internal power plant: 2,500w</description>
       <anticipationSound>DropPod_Fall</anticipationSound>
       <anticipationSoundTicks>100</anticipationSoundTicks>
       <motesPerCell>0</motesPerCell>
+      <rotationCurve>
+        <points>
+          <li>(0,30)</li>
+          <li>(0.5,5)</li>
+          <li>(0.9,-5)</li>
+          <li>(0.95,0)</li>
+        </points>
+      </rotationCurve>
+      <zPositionCurve>
+        <points>
+          <li>(0.95,2.5)</li>
+          <li>(1,0)</li>
+        </points>
+      </zPositionCurve>
+      <speedCurve>
+        <points>
+          <li>(0.6,0.6)</li>
+          <li>(0.95,0.1)</li>
+        </points>
+      </speedCurve>
     </skyfaller>
   </ThingDef>
-  <ThingDef ParentName="SkyfallerBase">
+  <ThingDef ParentName="ShuttleSkyfallerBase">
     <defName>RazorcrestSTARWARS_Leaving</defName>
     <label>razorcrest leaving</label>
     <thingClass>SRTS.SRTSLeaving</thingClass>
@@ -187,9 +262,28 @@ Internal power plant: 2,500w</description>
         <min>-40</min>
         <max>-15</max>
       </ticksToImpactRange>
+      <rotationCurve>
+        <points>
+          <li>(0,0)</li>
+          <li>(0.15,10)</li>
+          <li>(0.5,-5)</li>
+        </points>
+      </rotationCurve>
+      <zPositionCurve>
+        <points>
+          <li>(0,0)</li>
+          <li>(0.08,2)</li>
+        </points>
+      </zPositionCurve>
+      <speedCurve>
+        <points>
+          <li>(0,0.2)</li>
+          <li>(0.4,0.7)</li>
+        </points>
+      </speedCurve>
     </skyfaller>
   </ThingDef>
-  <ThingDef ParentName="BomberSkyfallerBase">
+  <ThingDef ParentName="BomberShuttleSkyfallerBase">
     <defName>RazorcrestSTARWARS_BomberRun</defName>
     <label>razorcrest Bombing</label>
     <thingClass>SRTS.SRTSBombing</thingClass>

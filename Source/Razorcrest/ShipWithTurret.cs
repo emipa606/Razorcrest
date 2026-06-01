@@ -11,7 +11,7 @@ using Verse.Sound;
 namespace Razorcrest;
 
 [StaticConstructorOnStartup]
-public class ShipWithTurret : Building, IAttackTarget, IAttackTargetSearcher
+public class ShipWithTurret : Building_PassengerShuttle, IAttackTarget, IAttackTargetSearcher
 {
     private const int TryStartShootSomethingIntervalTicks = 10;
 

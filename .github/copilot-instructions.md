@@ -1,34 +1,53 @@
-# .github/copilot-instructions.md
+# Razorcrest (Continued) Mod - GitHub Copilot Instructions
 
-## Mod Overview and Purpose
-This mod introduces a new class of ships equipped with turrets to the game RimWorld. These ships offer enhanced combat features and strategic combat management for players looking to enhance their defense and offense capabilities.
+## Mod Overview
+
+The Razorcrest (Continued) mod brings the iconic Razorcrest ship from "The Mandalorian" series into RimWorld. It offers players the chance to embark on bounty hunter adventures in the Star Wars universe, with the Razorcrest ready to take flight across the Rim. This mod is an update of Topkeks’ original creation and is designed for seamless integration with RimWorld's SRTS Expanded mod, requiring research into "Mandorian Flight." 
+
+## Purpose
+
+The primary purpose of this mod is to enhance the gameplay experience by introducing a legendary starship with unique features and capabilities. The Razorcrest is designed for both travel and combat, offering new tactical opportunities and immersive gameplay for fans of Star Wars and RimWorld.
 
 ## Key Features and Systems
-- **Ship With Turret:** Implements a ship capable of engaging targets using mounted turrets.
-- **Projectile Launching:** Custom verb extensions for launching projectiles.
-- **Targeting System:** Implements comprehensive targeting logic for engaging enemy threats.
-- **Attack Management:** Detailed control and logic for managing attacks including start, burst, completion, and cooldown mechanics.
+
+- **Personnel and Cargo Capacity**: The Razorcrest can hold up to 8 personnel and a bomb capacity of 24 with a good accuracy level.
+- **Travel and Combat**: While traveling slowly, it compensates with good fuel efficiency and a maximum payload capacity for various missions.
+- **Power Source**: The ship is equipped with an internal power plant producing 1000w for operational efficiency.
+- **Self-Defense Mechanism**: The front guns can engage enemies within a 100° cone, aiding in defense while exploring or in battle.
+- **Control Features**: Includes a "Hold Fire" feature to manage combat engagements.
 
 ## Coding Patterns and Conventions
-- **Class Design:** Follows an inheritance-based design where advanced behavior (e.g., `Verb_Shoot`) extends base functionality (`Verb_LaunchProjectile`).
-- **Visibility Modifiers:** Uses appropriate access modifiers like `public`, `protected`, and `private` to ensure encapsulation and modularity.
-- **CamelCase Naming:** Classes and methods use CamelCase to remain consistent with C# naming conventions.
-- **Minimal Comments:** Code should be self-explanatory but include comments where complex logic or decisions are implemented.
+
+- Follow .NETFramework version 4.8 standards and C# conventions.
+- Class and method names are styled in PascalCase.
+- Use meaningful method names that clearly communicate their functionality, e.g., `throwDebugText`, `OrderAttack`.
+- Maintain modular code with specific responsibilities, isolating methods for specific actions.
 
 ## XML Integration
-In RimWorld mods, XML files are commonly used to define game data that plugins interact with. While this summary does not include XML details, ensure you:
-- **Define New Defs:** Use XML to define new DefModExtension data (`TurretPosOffset` is an example) that integrates with the C# logic.
-- **Harmonize Data and Code:** XML definitions should complement and support the C# logic, ensuring seamless integration between in-game data representations and functionality.
+
+- Integration with RimWorld's XML systems is crucial for defining new items, buildings, research projects, etc.
+- Use `<DefModExtension>` to extend existing definitions with additional properties as needed, exemplified by `TurretPosOffset`.
 
 ## Harmony Patching
-Harmony is essential to modify the existing game functionality without altering the original codebase.
-- **Patch Entry Points:** Consider scenarios where your code interacts with the base game's code. Use Harmony to patch methods at these entry points.
-- **Prefix/Postfix Techniques:** Use Harmony's Prefix and Postfix methods to insert or append behavior.
-  
-## Suggestions for Copilot
-- **Helper Methods:** Consider using Copilot to generate helper methods for repetitive logic or to facilitate complex calculations.
-- **Code Completion:** Take advantage of Copilot’s code completion to expedite the development of standard logic patterns, such as target selection and attack sequences.
-- **Refactoring Assistance:** Use Copilot suggestions to identify redundant code segments that could be consolidated for efficiency.
-- **Generating Tests:** Although this summary does not include test files, use Copilot for drafting potential test cases for functionalities like `ThreatDisabled` or `OrderAttack`.
 
-Ensure that any generated code adheres to the conventions and architecture described in this document for consistency and maintainability.
+- Utilize Harmony to patch existing RimWorld methods when altering game mechanics, such as modifying turret behavior or implementing new attack patterns.
+- Ensure patches are non-invasive and reversible to not disrupt the core game functionality.
+- Document any changes made to the game’s original methods clearly.
+
+## Suggestions for Copilot
+
+- **General Coding**: Assist in generating repetitive code patterns such as method stubs and interface implementations for new classes and methods.
+- **Debugging**: Facilitate generating detailed debug text output using methods like `throwDebugText`.
+- **Harmony Integration**: Help in setting up Harmony patches by suggesting common patch templates and best practices in modding RimWorld.
+- **XML Handling**: Provide template suggestions for XML files and DefModExtensions used in integrating new features with the game.
+- **Class Implementations**: Propose class structures and method definitions for common interfaces like `IAttackTargetSearcher` to ensure conformity to expected game behaviors.
+
+By integrating these instructions and leveraging GitHub Copilot effectively, developers can enhance the functionality and maintainability of the Razorcrest (Continued) mod while ensuring high-quality code practices.
+
+## Project Solution Guidelines
+- Relevant mod XML files are included as Solution Items under the solution folder named XML, these can be read and modified from within the solution.
+- Use these in-solution XML files as the primary files for reference and modification.
+- The `.github/copilot-instructions.md` file is included in the solution under the `.github` solution folder, so it should be read/modified from within the solution instead of using paths outside the solution. Update this file once only, as it and the parent-path solution reference point to the same file in this workspace.
+- When making functional changes in this mod, ensure the documented features stay in sync with implementation; use the in-solution `.github` copy as the primary file.
+- In the solution is also a project called Assembly-CSharp, containing a read-only version of the decompiled game source, for reference and debugging purposes.
+- For any new documentation, update this copilot-instructions.md file rather than creating separate documentation files.

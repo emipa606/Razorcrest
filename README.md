@@ -1,12 +1,12 @@
 # [Razorcrest (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3040139485)
 
-![Image](https://i.imgur.com/buuPQel.png)
+![Image](https://img.litet.net/logos/Info.png)
 
 Update of Topkeks mod https://steamcommunity.com/sharedfiles/filedetails/?id=2288731525
 
-![Image](https://i.imgur.com/pufA0kM.png)
+![Image](https://img.litet.net/logos/Notice.png)
 	
-![Image](https://i.imgur.com/Z4GOv8H.png)
+![Image](https://img.litet.net/logos/OriginalDescription.png)
 
 This adds to Rimworld the famous Razorcrest, from the star wars TV Series "The Mandolorian"
 
@@ -43,13 +43,13 @@ Fixed T H I C C line model on RazorCrest. Should be significantly thinner.
 Added self defense to RazorCrest. The RazorCrests' front guns will now engage enemies within a 100 Degree cone to it's direct front. 
 Added a "Hold Fire" button to prevent the RazorCrest from automatically engaging targets.
 
-![Image](https://i.imgur.com/PwoNOj4.png)
+![Image](https://img.litet.net/logos/ReportingIssues.png)
 
 
 
 -  See if the the error persists if you just have this mod and its requirements active.
 -  If not, try adding your other mods until it happens again.
--  Post your error-log using the [Log Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) or the standalone [Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) and command Ctrl+F12
+-  Always post your log using the [Log Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404)
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
@@ -57,4 +57,4 @@ Added a "Hold Fire" button to prevent the RazorCrest from automatically engaging
 
  
 
-[![Image](https://img.shields.io/github/v/release/emipa606/Razorcrest?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/3040139485) | tags:  bounty hunter,  srts
+[![Image](https://img.shields.io/github/v/release/emipa606/Razorcrest?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/3040139485) | tags: bounty hunter, srts
